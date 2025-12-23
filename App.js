@@ -1,20 +1,132 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { SafeAreaView, StatusBar, StyleSheet, View } from 'react-native';
+import { GameEngine } from 'react-native-game-engine';
+import { useDimensions } from './utils/constants';
+import { createInitialEntities } from './utils/entities';
+import { Physics } from './systems/Physics';
+import { ObstacleSpawner } from './systems/ObstacleSpawner';
+import { Cleanup } from './systems/Cleanup';
+import { Collision } from './systems/Collision';
+import { Difficulty } from './systems/Difficulty';
+import { InputSystem } from './systems/Input';
+import { ScoreSystem } from './systems/Score';
+import { StartScreen } from './components/StartScreen';
+import { GameOverOverlay } from './components/GameOverOverlay';
+import { HUD } from './components/HUD';
+import { getBestScore, saveBestScoreIfHigher } from './utils/storage';
 
 export default function App() {
+  const { width, height } = useDimensions();
+  const [entities, setEntities] = useState(() => createInitialEntities(width, height));
+  const [running, setRunning] = useState(false);
+  const [hasStarted, setHasStarted] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
+  const [isGameOver, setIsGameOver] = useState(false);
+  const [score, setScore] = useState(0);
+  const [bestScore, setBestScore] = useState(0);
+  const [engineKey, setEngineKey] = useState(0);
+
+  const gameEngineRef = useRef(null);
+
+  // Load best score once on mount.
+  useEffect(() => {
+    (async () => {
+      const stored = await getBestScore();
+      if (stored != null) {
+        setBestScore(stored);
+      }
+    })();
+  }, []);
+
+  const handleEvent = useCallback(
+    async (e) => {
+      if (e.type === 'game-over') {
+        setRunning(false);
+        setIsGameOver(true);
+        setIsPaused(false);
+        setHasStarted(true);
+        await saveBestScoreIfHigher(score);
+        const stored = await getBestScore();
+        if (stored != null) {
+          setBestScore(stored);
+        }
+      } else if (e.type === 'score-update') {
+        setScore(Math.floor(e.score));
+      }
+    },
+    [score]
+  );
+
+  const handleStart = () => {
+    setEngineKey((k) => k + 1);
+    setEntities(createInitialEntities(width, height));
+    setScore(0);
+    setIsGameOver(false);
+    setHasStarted(true);
+    setIsPaused(false);
+    setRunning(true);
+  };
+
+  const handlePlayAgain = () => {
+    handleStart();
+  };
+
+  const togglePause = () => {
+    if (!hasStarted || isGameOver) return;
+    setIsPaused((prev) => !prev);
+    setRunning((prev) => !prev);
+  };
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <SafeAreaView style={styles.container}>
+      <StatusBar hidden />
+      <View style={styles.gameContainer}>
+        <GameEngine
+          key={engineKey}
+          ref={gameEngineRef}
+          style={styles.gameEngine}
+          systems={[
+            Physics,
+            InputSystem,
+            ObstacleSpawner,
+            Difficulty,
+            Cleanup,
+            Collision,
+            ScoreSystem,
+          ]}
+          entities={entities}
+          running={running}
+          onEvent={handleEvent}
+        />
+        <HUD
+          score={score}
+          bestScore={bestScore}
+          isPaused={isPaused}
+          onTogglePause={togglePause}
+          visible={hasStarted && !isGameOver}
+        />
+        <StartScreen visible={!hasStarted} onStart={handleStart} />
+        <GameOverOverlay
+          visible={isGameOver}
+          score={score}
+          bestScore={bestScore}
+          onPlayAgain={handlePlayAgain}
+        />
+      </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: '#050816',
+  },
+  gameContainer: {
+    flex: 1,
+  },
+  gameEngine: {
+    flex: 1,
+    backgroundColor: '#050816',
   },
 });
