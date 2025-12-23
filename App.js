@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { SafeAreaView, StatusBar, StyleSheet, View } from 'react-native';
+import { SafeAreaView, StatusBar, StyleSheet, View, ImageBackground } from 'react-native';
 import { GameEngine } from 'react-native-game-engine';
 import { useDimensions } from './utils/constants';
 import { createInitialEntities } from './utils/entities';
@@ -78,42 +78,48 @@ export default function App() {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <StatusBar hidden />
-      <View style={styles.gameContainer}>
-        <GameEngine
-          key={engineKey}
-          ref={gameEngineRef}
-          style={styles.gameEngine}
-          systems={[
-            Physics,
-            InputSystem,
-            ObstacleSpawner,
-            Difficulty,
-            Cleanup,
-            Collision,
-            ScoreSystem,
-          ]}
-          entities={entities}
-          running={running}
-          onEvent={handleEvent}
-        />
-        <HUD
-          score={score}
-          bestScore={bestScore}
-          isPaused={isPaused}
-          onTogglePause={togglePause}
-          visible={hasStarted && !isGameOver}
-        />
-        <StartScreen visible={!hasStarted} onStart={handleStart} />
-        <GameOverOverlay
-          visible={isGameOver}
-          score={score}
-          bestScore={bestScore}
-          onPlayAgain={handlePlayAgain}
-        />
-      </View>
-    </SafeAreaView>
+      <ImageBackground
+        source={require('./assets/background.png')}
+        style={styles.backgroundImage}
+        resizeMode="cover"
+      >
+        <View style={styles.gameContainer}>
+          <GameEngine
+            key={engineKey}
+            ref={gameEngineRef}
+            style={styles.gameEngine}
+            systems={[
+              Physics,
+              InputSystem,
+              ObstacleSpawner,
+              Difficulty,
+              Cleanup,
+              Collision,
+              ScoreSystem,
+            ]}
+            entities={entities}
+            running={running}
+            onEvent={handleEvent}
+          />
+          <HUD
+            score={score}
+            bestScore={bestScore}
+            isPaused={isPaused}
+            onTogglePause={togglePause}
+            visible={hasStarted && !isGameOver}
+          />
+          <StartScreen visible={!hasStarted} onStart={handleStart} />
+          <GameOverOverlay
+            visible={isGameOver}
+            score={score}
+            bestScore={bestScore}
+            onPlayAgain={handlePlayAgain}
+          />
+        </View>
+      </ImageBackground>
+    </View>
   );
 }
 
@@ -122,11 +128,16 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#050816',
   },
+  backgroundImage: {
+    flex: 1,
+    width: '100%',
+    height: '100%',
+  },
   gameContainer: {
     flex: 1,
   },
   gameEngine: {
     flex: 1,
-    backgroundColor: '#050816',
+    backgroundColor: 'transparent',
   },
 });
