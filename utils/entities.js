@@ -18,7 +18,9 @@ export const createInitialEntities = (width, height) => {
   });
 
   // Floor and walls (invisible).
-  const floor = Matter.Bodies.rectangle(width / 2, height + 25, width, 50, {
+  // Move the floor well below the screen so obstacles fall out of view
+  // instead of stacking at the bottom edge.
+  const floor = Matter.Bodies.rectangle(width / 2, height + 200, width, 50, {
     isStatic: true,
     label: 'Floor',
   });
