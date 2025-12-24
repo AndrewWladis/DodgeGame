@@ -62,14 +62,38 @@ export const Obstacle = ({ body, size, color }) => {
           ],
         },
       ]}
-    />
+    >
+      {/* Rock texture effect - darker shadow on one side */}
+      <View style={styles.rockShadow} />
+      {/* Rock highlight on opposite side */}
+      <View style={styles.rockHighlight} />
+    </Animated.View>
   );
 };
 
 const styles = StyleSheet.create({
   obstacle: {
     position: 'absolute',
-    borderRadius: 8,
+    borderRadius: 4,
+    overflow: 'hidden',
+    borderWidth: 1,
+    borderColor: 'rgba(0, 0, 0, 0.3)',
+  },
+  rockShadow: {
+    position: 'absolute',
+    left: 0,
+    top: 0,
+    width: '40%',
+    height: '100%',
+    backgroundColor: 'rgba(0, 0, 0, 0.3)',
+  },
+  rockHighlight: {
+    position: 'absolute',
+    right: 0,
+    top: 0,
+    width: '30%',
+    height: '100%',
+    backgroundColor: 'rgba(255, 255, 255, 0.15)',
   },
 });
 

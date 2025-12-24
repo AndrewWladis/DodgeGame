@@ -16,7 +16,7 @@ export const SCORE_PER_SECOND = 67; // points per second survived
 export const SCORE_PER_LEVEL = 1500; // every this many points, difficulty increases
 export const COIN_POINTS = 1000; // points awarded for collecting a coin
 
-export const OBSTACLE_COLORS = ['#f97316', '#22c55e', '#3b82f6', '#e11d48', '#a855f7'];
+export const OBSTACLE_COLORS = ['#4a5568', '#2d3748', '#1a202c', '#718096', '#5a6c7d', '#3d4852'];
 
 export const COIN_RADIUS = 20;
 export const COIN_SPAWN_INTERVAL = 3000; // ms between coin spawns

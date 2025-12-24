@@ -46,11 +46,11 @@ const styles = StyleSheet.create({
     width: 80,
     height: 80,
     borderRadius: 40,
-    backgroundColor: 'rgba(15, 23, 42, 0.9)',
+    backgroundColor: 'rgba(30, 58, 95, 0.85)',
     alignItems: 'center',
     justifyContent: 'center',
     borderWidth: 1,
-    borderColor: '#4b5563',
+    borderColor: '#3db5c8',
   },
   leftButton: {},
   rightButton: {},
@@ -58,6 +58,7 @@ const styles = StyleSheet.create({
     color: '#e5e7eb',
     fontSize: 32,
     fontWeight: 'bold',
+    fontFamily: 'Papyrus',
   },
 });
 

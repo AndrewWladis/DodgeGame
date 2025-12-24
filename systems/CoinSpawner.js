@@ -28,10 +28,14 @@ export const CoinSpawner = (entities, { time }) => {
 
     Matter.World.add(world, coinBody);
 
+    // Random gem colors
+    const gemColors = ['#FFD700', '#FF6B9D', '#4ECDC4', '#95E1D3', '#F38181', '#AA96DA', '#FCBAD3'];
+    const color = gemColors[coinId % gemColors.length];
+    
     entities[`coin-${coinId}`] = {
       body: coinBody,
       size: [COIN_RADIUS * 2, COIN_RADIUS * 2],
-      color: '#FFD700',
+      color,
       renderer: require('../entities/Coin').Coin,
     };
   }

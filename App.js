@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { SafeAreaView, StatusBar, StyleSheet, View, ImageBackground } from 'react-native';
+import { SafeAreaView, StatusBar, StyleSheet, View } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 import { GameEngine } from 'react-native-game-engine';
 import { useDimensions } from './utils/constants';
 import { createInitialEntities } from './utils/entities';
@@ -81,10 +82,10 @@ export default function App() {
   return (
     <View style={styles.container}>
       <StatusBar hidden />
-      <ImageBackground
-        source={require('./assets/background.png')}
+      <LinearGradient
+        colors={['#5aa0b8', '#4a90a4', '#3a8ba0', '#2e7d8f', '#1e5f7a']}
+        locations={[0, 0.25, 0.5, 0.75, 1]}
         style={styles.backgroundImage}
-        resizeMode="cover"
       >
         <View style={styles.gameContainer}>
           <GameEngine
@@ -120,7 +121,7 @@ export default function App() {
             onPlayAgain={handlePlayAgain}
           />
         </View>
-      </ImageBackground>
+      </LinearGradient>
     </View>
   );
 }
@@ -128,7 +129,7 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#050816',
+    backgroundColor: '#1e3a5f',
   },
   backgroundImage: {
     flex: 1,
@@ -137,6 +138,7 @@ const styles = StyleSheet.create({
   },
   gameContainer: {
     flex: 1,
+    zIndex: 1,
   },
   gameEngine: {
     flex: 1,

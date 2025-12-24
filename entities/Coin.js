@@ -87,7 +87,7 @@ export const Coin = ({ body, size, color }) => {
   return (
     <Animated.View
       style={[
-        styles.coin,
+        styles.gem,
         {
           left: x,
           top: baseY,
@@ -103,47 +103,86 @@ export const Coin = ({ body, size, color }) => {
       {/* Outer glow layer */}
       <Animated.View
         style={[
-          styles.coinGlow,
+          styles.gemGlow,
           {
             opacity: glowOpacity,
+            backgroundColor: color,
+            shadowColor: color,
           },
         ]}
       />
-      {/* Inner coin */}
-      <View style={[styles.coinInner, { backgroundColor: color }]} />
+      {/* Gem diamond shape */}
+      <View style={[styles.gemDiamond, { borderColor: color, shadowColor: color }]}>
+        {/* Sparkle effect - top point */}
+        <View style={[styles.sparkle, styles.sparkleTop, { backgroundColor: color, shadowColor: color }]} />
+        {/* Sparkle effect - right point */}
+        <View style={[styles.sparkle, styles.sparkleRight, { backgroundColor: color, shadowColor: color }]} />
+        {/* Sparkle effect - bottom point */}
+        <View style={[styles.sparkle, styles.sparkleBottom, { backgroundColor: color, shadowColor: color }]} />
+        {/* Sparkle effect - left point */}
+        <View style={[styles.sparkle, styles.sparkleLeft, { backgroundColor: color, shadowColor: color }]} />
+      </View>
     </Animated.View>
   );
 };
 
 const styles = StyleSheet.create({
-  coin: {
+  gem: {
     position: 'absolute',
     justifyContent: 'center',
     alignItems: 'center',
   },
-  coinGlow: {
+  gemGlow: {
     position: 'absolute',
-    width: '150%',
-    height: '150%',
+    width: '180%',
+    height: '180%',
     borderRadius: 999,
-    backgroundColor: '#FFD700',
-    shadowColor: '#FFD700',
     shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 1,
-    shadowRadius: 25,
-    elevation: 25, // For Android shadow
+    shadowOpacity: 0.8,
+    shadowRadius: 30,
+    elevation: 30,
   },
-  coinInner: {
-    width: '100%',
-    height: '100%',
-    borderRadius: 999,
+  gemDiamond: {
+    width: '70%',
+    height: '70%',
     borderWidth: 3,
-    borderColor: '#FFD700',
-    shadowColor: '#FFD700',
+    borderStyle: 'solid',
+    transform: [{ rotate: '45deg' }],
+    backgroundColor: 'rgba(255, 255, 255, 0.3)',
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.9,
+    shadowRadius: 15,
+    elevation: 15,
+  },
+  sparkle: {
+    position: 'absolute',
+    width: 6,
+    height: 6,
+    borderRadius: 3,
     shadowOffset: { width: 0, height: 0 },
     shadowOpacity: 1,
-    shadowRadius: 20,
-    elevation: 20, // For Android shadow
+    shadowRadius: 8,
+    elevation: 8,
+  },
+  sparkleTop: {
+    top: -8,
+    left: '50%',
+    marginLeft: -3,
+  },
+  sparkleRight: {
+    right: -8,
+    top: '50%',
+    marginTop: -3,
+  },
+  sparkleBottom: {
+    bottom: -8,
+    left: '50%',
+    marginLeft: -3,
+  },
+  sparkleLeft: {
+    left: -8,
+    top: '50%',
+    marginTop: -3,
   },
 });
 

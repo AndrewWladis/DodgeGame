@@ -19,7 +19,7 @@ export const GameOverOverlay = ({ visible, score, bestScore, onPlayAgain }) => {
 const styles = StyleSheet.create({
   overlay: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(5, 8, 22, 0.95)',
+    backgroundColor: 'rgba(30, 58, 95, 0.9)',
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: 24,
@@ -27,21 +27,24 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 40,
     fontWeight: '900',
-    color: '#f472b6',
+    color: '#7dd3fc',
     marginBottom: 24,
+    fontFamily: 'Papyrus',
   },
   score: {
-    fontSize: 24,
+    fontSize: 36,
     color: '#e5e7eb',
     marginBottom: 4,
+    fontFamily: 'Papyrus',
   },
   bestScore: {
-    fontSize: 18,
-    color: '#a5b4fc',
+    fontSize: 28,
+    color: '#93c5fd',
     marginBottom: 32,
+    fontFamily: 'Papyrus',
   },
   button: {
-    backgroundColor: '#4fd1c5',
+    backgroundColor: '#3db5c8',
     paddingHorizontal: 32,
     paddingVertical: 12,
     borderRadius: 999,
@@ -50,6 +53,7 @@ const styles = StyleSheet.create({
     color: '#0b1120',
     fontWeight: 'bold',
     fontSize: 18,
+    fontFamily: 'Papyrus',
   },
 });
 

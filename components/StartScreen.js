@@ -6,7 +6,7 @@ export const StartScreen = ({ visible, onStart }) => {
 
   return (
     <View style={styles.overlay}>
-      <Text style={styles.title}>COSMIC RUN</Text>
+      <Text style={styles.title}>TRIPLE T RIVER RUN</Text>
       <TouchableOpacity onPress={onStart} style={styles.button}>
         <Text style={styles.buttonText}>Play</Text>
       </TouchableOpacity>
@@ -17,7 +17,7 @@ export const StartScreen = ({ visible, onStart }) => {
 const styles = StyleSheet.create({
   overlay: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(5, 8, 22, 0.9)',
+    backgroundColor: 'rgba(30, 58, 95, 0.85)',
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: 24,
@@ -29,13 +29,14 @@ const styles = StyleSheet.create({
     color: '#ffffff',
     marginBottom: 16,
     textAlign: 'center',
+    fontFamily: 'Papyrus',
   },
   button: {
-    backgroundColor: '#4fd1c5',
+    backgroundColor: '#3db5c8',
     paddingHorizontal: 36,
     paddingVertical: 14,
     borderRadius: 999,
-    shadowColor: '#4fd1c5',
+    shadowColor: '#3db5c8',
     shadowOpacity: 0.7,
     shadowRadius: 16,
     shadowOffset: { width: 0, height: 0 },
@@ -44,6 +45,7 @@ const styles = StyleSheet.create({
     color: '#0b1120',
     fontWeight: 'bold',
     fontSize: 18,
+    fontFamily: 'Papyrus',
   },
 });
 
