@@ -6,7 +6,7 @@ export const StartScreen = ({ visible, onStart }) => {
 
   return (
     <View style={styles.overlay}>
-      <Text style={styles.title}>TRIPLE T RIVER RUN</Text>
+      <Text style={styles.title}>TRIPLE T'S COSMIC RUN</Text>
       <TouchableOpacity onPress={onStart} style={styles.button}>
         <Text style={styles.buttonText}>Play</Text>
       </TouchableOpacity>

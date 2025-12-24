@@ -16,7 +16,17 @@ export const SCORE_PER_SECOND = 67; // points per second survived
 export const SCORE_PER_LEVEL = 1500; // every this many points, difficulty increases
 export const COIN_POINTS = 1000; // points awarded for collecting a coin
 
-export const OBSTACLE_COLORS = ['#4a5568', '#2d3748', '#1a202c', '#718096', '#5a6c7d', '#3d4852'];
+// Space-themed asteroid colors - dark browns, grays with orange/red hints, metallic
+export const OBSTACLE_COLORS = [
+  '#3d2817', // Dark brown asteroid
+  '#4a2c1a', // Brown-gray asteroid
+  '#2d1f14', // Very dark brown
+  '#5a3d2e', // Medium brown
+  '#3a2a1f', // Dark brown-gray
+  '#4d3526', // Brown with gray
+  '#2f2419', // Dark space rock
+  '#5c4033', // Medium space rock
+];
 
 export const COIN_RADIUS = 20;
 export const COIN_SPAWN_INTERVAL = 3000; // ms between coin spawns

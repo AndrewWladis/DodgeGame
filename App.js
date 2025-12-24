@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { SafeAreaView, StatusBar, StyleSheet, View } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
+import { SafeAreaView, StatusBar, StyleSheet, View, ImageBackground } from 'react-native';
 import { GameEngine } from 'react-native-game-engine';
+import { Audio } from 'expo-av';
 import { useDimensions } from './utils/constants';
 import { createInitialEntities } from './utils/entities';
 import { Physics } from './systems/Physics';
@@ -29,15 +29,47 @@ export default function App() {
   const [engineKey, setEngineKey] = useState(0);
 
   const gameEngineRef = useRef(null);
+  const bangSoundRef = useRef(null);
+  const moneySoundRef = useRef(null);
 
-  // Load best score once on mount.
+  // Load best score and sounds once on mount.
   useEffect(() => {
     (async () => {
       const stored = await getBestScore();
       if (stored != null) {
         setBestScore(stored);
       }
+
+      // Load the bang sound effect
+      try {
+        const { sound } = await Audio.Sound.createAsync(
+          require('./assets/bang.mp3')
+        );
+        bangSoundRef.current = sound;
+      } catch (error) {
+        console.warn('Failed to load bang sound:', error);
+      }
+
+      // Load the money sound effect
+      try {
+        const { sound } = await Audio.Sound.createAsync(
+          require('./assets/money.mp3')
+        );
+        moneySoundRef.current = sound;
+      } catch (error) {
+        console.warn('Failed to load money sound:', error);
+      }
     })();
+
+    // Cleanup sounds on unmount
+    return () => {
+      if (bangSoundRef.current) {
+        bangSoundRef.current.unloadAsync();
+      }
+      if (moneySoundRef.current) {
+        moneySoundRef.current.unloadAsync();
+      }
+    };
   }, []);
 
   const handleEvent = useCallback(
@@ -61,7 +93,13 @@ export default function App() {
 
   const handleStart = () => {
     setEngineKey((k) => k + 1);
-    setEntities(createInitialEntities(width, height));
+    const newEntities = createInitialEntities(width, height);
+    // Add sound references to entities so collision system can access them
+    newEntities.sound = {
+      bang: bangSoundRef.current,
+      money: moneySoundRef.current,
+    };
+    setEntities(newEntities);
     setScore(0);
     setIsGameOver(false);
     setHasStarted(true);
@@ -82,10 +120,10 @@ export default function App() {
   return (
     <View style={styles.container}>
       <StatusBar hidden />
-      <LinearGradient
-        colors={['#5aa0b8', '#4a90a4', '#3a8ba0', '#2e7d8f', '#1e5f7a']}
-        locations={[0, 0.25, 0.5, 0.75, 1]}
+      <ImageBackground
+        source={require('./assets/background.png')}
         style={styles.backgroundImage}
+        resizeMode="cover"
       >
         <View style={styles.gameContainer}>
           <GameEngine
@@ -121,7 +159,7 @@ export default function App() {
             onPlayAgain={handlePlayAgain}
           />
         </View>
-      </LinearGradient>
+      </ImageBackground>
     </View>
   );
 }

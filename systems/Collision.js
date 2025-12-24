@@ -23,6 +23,14 @@ export const Collision = (entities, { dispatch }) => {
           (labels[1] === 'Player' && labels[0] === 'Obstacle');
 
         if (isPlayerHit) {
+          // Play bang sound effect
+          if (entities.sound && entities.sound.bang) {
+            entities.sound.bang.setPositionAsync(0)
+              .then(() => entities.sound.bang.playAsync())
+              .catch((error) => {
+                console.warn('Failed to play bang sound:', error);
+              });
+          }
           dispatch({ type: 'game-over' });
           break;
         }
@@ -34,6 +42,15 @@ export const Collision = (entities, { dispatch }) => {
 
         if (isCoinCollected) {
           const coinBody = labels[0] === 'Coin' ? bodyA : bodyB;
+          
+          // Play money sound effect
+          if (entities.sound && entities.sound.money) {
+            entities.sound.money.setPositionAsync(0)
+              .then(() => entities.sound.money.playAsync())
+              .catch((error) => {
+                console.warn('Failed to play money sound:', error);
+              });
+          }
           
           // Remove coin from world and entities
           Matter.World.remove(world, coinBody);

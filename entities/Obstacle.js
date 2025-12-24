@@ -63,10 +63,13 @@ export const Obstacle = ({ body, size, color }) => {
         },
       ]}
     >
-      {/* Rock texture effect - darker shadow on one side */}
-      <View style={styles.rockShadow} />
-      {/* Rock highlight on opposite side */}
-      <View style={styles.rockHighlight} />
+      {/* Space asteroid texture - darker shadow on one side */}
+      <View style={styles.asteroidShadow} />
+      {/* Asteroid highlight on opposite side */}
+      <View style={styles.asteroidHighlight} />
+      {/* Crater-like details for space rock effect */}
+      <View style={styles.crater1} />
+      <View style={styles.crater2} />
     </Animated.View>
   );
 };
@@ -74,26 +77,53 @@ export const Obstacle = ({ body, size, color }) => {
 const styles = StyleSheet.create({
   obstacle: {
     position: 'absolute',
-    borderRadius: 4,
+    borderRadius: 12, // More rounded for asteroid look
     overflow: 'hidden',
     borderWidth: 1,
-    borderColor: 'rgba(0, 0, 0, 0.3)',
+    borderColor: 'rgba(0, 0, 0, 0.5)',
+    shadowColor: '#000',
+    shadowOffset: { width: 2, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 3,
+    elevation: 3,
   },
-  rockShadow: {
+  asteroidShadow: {
     position: 'absolute',
     left: 0,
     top: 0,
-    width: '40%',
+    width: '45%',
     height: '100%',
-    backgroundColor: 'rgba(0, 0, 0, 0.3)',
+    backgroundColor: 'rgba(0, 0, 0, 0.4)',
+    borderTopLeftRadius: 12,
+    borderBottomLeftRadius: 12,
   },
-  rockHighlight: {
+  asteroidHighlight: {
     position: 'absolute',
     right: 0,
     top: 0,
-    width: '30%',
+    width: '25%',
     height: '100%',
-    backgroundColor: 'rgba(255, 255, 255, 0.15)',
+    backgroundColor: 'rgba(255, 200, 100, 0.2)', // Warm highlight for space rock
+    borderTopRightRadius: 12,
+    borderBottomRightRadius: 12,
+  },
+  crater1: {
+    position: 'absolute',
+    left: '30%',
+    top: '30%',
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  crater2: {
+    position: 'absolute',
+    right: '25%',
+    bottom: '25%',
+    width: 6,
+    height: 6,
+    borderRadius: 3,
+    backgroundColor: 'rgba(0, 0, 0, 0.4)',
   },
 });
 
