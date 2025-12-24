@@ -43,7 +43,7 @@ export const Player = ({ body, size, color }) => {
   // Apply smooth up/down motion: 0 = bottom, 1 = top (10px up)
   const animatedY = floatAnim.interpolate({
     inputRange: [0, 1],
-    outputRange: [0, -10], // Negative Y moves up
+    outputRange: [10, 0], // Negative Y moves up
   });
 
   return (
