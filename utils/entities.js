@@ -2,25 +2,37 @@ import Matter from 'matter-js';
 import { PLAYER_RADIUS } from './constants';
 
 // Creates the initial entities for a new game run given screen dimensions.
-export const createInitialEntities = (width, height) => {
+// gamemode: 1 = space (default), 2 = river, 3 = reverse
+export const createInitialEntities = (width, height, gamemode = 1) => {
   const engine = Matter.Engine.create({
     enableSleeping: false,
   });
   const world = engine.world;
 
-  // Gravity pulls obstacles downward.
-  engine.world.gravity.y = 0.9;
+  // Mode 3 (reverse) has reversed gravity, others have normal downward gravity
+  const isReverse = gamemode === 3;
+  engine.world.gravity.y = isReverse ? -0.9 : 0.9;
 
-  // Player starting lower on the screen.
-  const playerBody = Matter.Bodies.circle(width / 2, height * 0.7, PLAYER_RADIUS, {
+  // Player position based on mode
+  let playerY;
+  if (isReverse) {
+    // Mode 3: Player at top
+    playerY = height * 0.3;
+  } else {
+    // Mode 1 & 2: Player at bottom
+    playerY = height * 0.7;
+  }
+
+  const playerBody = Matter.Bodies.circle(width / 2, playerY, PLAYER_RADIUS, {
     label: 'Player',
     isStatic: true,
   });
 
   // Floor and walls (invisible).
-  // Move the floor well below the screen so obstacles fall out of view
-  // instead of stacking at the bottom edge.
-  const floor = Matter.Bodies.rectangle(width / 2, height + 200, width, 50, {
+  // For reverse mode, obstacles come from bottom, so floor is above screen
+  // For normal modes, floor is below screen
+  const floorY = isReverse ? -200 : height + 200;
+  const floor = Matter.Bodies.rectangle(width / 2, floorY, width, 50, {
     isStatic: true,
     label: 'Floor',
   });
@@ -49,12 +61,13 @@ export const createInitialEntities = (width, height) => {
       width,
       height,
       spawnInterval: 900,
-      obstacleSpeed: 4,
+      obstacleSpeed: isReverse ? -4 : 4, // Negative for reverse mode
       lastSpawnTime: 0,
       obstacleId: 0,
       coinId: 0,
       lastCoinSpawnTime: 0,
       score: 0,
+      gamemode, // Store gamemode in gameState for systems to access
     },
     player: {
       body: playerBody,

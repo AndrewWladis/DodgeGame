@@ -2,7 +2,7 @@
   "expo": {
     "name": "Triple T's Cosmic Run",
     "slug": "triple-t-s-cosmic-run",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "dark",

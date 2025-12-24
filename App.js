@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { SafeAreaView, StatusBar, StyleSheet, View, ImageBackground } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 import { GameEngine } from 'react-native-game-engine';
 import { Audio } from 'expo-av';
 import { useDimensions } from './utils/constants';
@@ -13,13 +14,15 @@ import { Difficulty } from './systems/Difficulty';
 import { InputSystem } from './systems/Input';
 import { ScoreSystem } from './systems/Score';
 import { StartScreen } from './components/StartScreen';
+import { GameModeSelection } from './components/GameModeSelection';
 import { GameOverOverlay } from './components/GameOverOverlay';
 import { HUD } from './components/HUD';
 import { getBestScore, saveBestScoreIfHigher } from './utils/storage';
 
 export default function App() {
   const { width, height } = useDimensions();
-  const [entities, setEntities] = useState(() => createInitialEntities(width, height));
+  const [gamemode, setGamemode] = useState(null); // null = not selected yet
+  const [entities, setEntities] = useState(() => createInitialEntities(width, height, 1));
   const [running, setRunning] = useState(false);
   const [hasStarted, setHasStarted] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
@@ -91,9 +94,14 @@ export default function App() {
     [score]
   );
 
+  const handleSelectMode = (mode) => {
+    setGamemode(mode);
+  };
+
   const handleStart = () => {
+    const selectedMode = gamemode || 1; // Default to mode 1 if somehow not set
     setEngineKey((k) => k + 1);
-    const newEntities = createInitialEntities(width, height);
+    const newEntities = createInitialEntities(width, height, selectedMode);
     // Add sound references to entities so collision system can access them
     newEntities.sound = {
       bang: bangSoundRef.current,
@@ -108,7 +116,29 @@ export default function App() {
   };
 
   const handlePlayAgain = () => {
-    handleStart();
+    // Restart the current game mode
+    const currentMode = gamemode || 1;
+    setIsGameOver(false);
+    setEngineKey((k) => k + 1);
+    const newEntities = createInitialEntities(width, height, currentMode);
+    newEntities.sound = {
+      bang: bangSoundRef.current,
+      money: moneySoundRef.current,
+    };
+    setEntities(newEntities);
+    setScore(0);
+    setHasStarted(true);
+    setIsPaused(false);
+    setRunning(true);
+  };
+
+  const handleSelectGameMode = () => {
+    // Go back to game mode selection
+    setIsGameOver(false);
+    setGamemode(null);
+    setHasStarted(false);
+    setRunning(false);
+    setScore(0);
   };
 
   const togglePause = () => {
@@ -117,49 +147,112 @@ export default function App() {
     setRunning((prev) => !prev);
   };
 
+  const currentMode = gamemode || 1; // Default to mode 1 for background when null
+  
   return (
     <View style={styles.container}>
       <StatusBar hidden />
-      <ImageBackground
-        source={require('./assets/background.png')}
-        style={styles.backgroundImage}
-        resizeMode="cover"
-      >
-        <View style={styles.gameContainer}>
-          <GameEngine
-            key={engineKey}
-            ref={gameEngineRef}
-            style={styles.gameEngine}
-            systems={[
-              Physics,
-              InputSystem,
-              ObstacleSpawner,
-              CoinSpawner,
-              Difficulty,
-              Cleanup,
-              Collision,
-              ScoreSystem,
-            ]}
-            entities={entities}
-            running={running}
-            onEvent={handleEvent}
-          />
-          <HUD
-            score={score}
-            bestScore={bestScore}
-            isPaused={isPaused}
-            onTogglePause={togglePause}
-            visible={hasStarted && !isGameOver}
-          />
-          <StartScreen visible={!hasStarted} onStart={handleStart} />
-          <GameOverOverlay
-            visible={isGameOver}
-            score={score}
-            bestScore={bestScore}
-            onPlayAgain={handlePlayAgain}
-          />
-        </View>
-      </ImageBackground>
+      {currentMode === 2 ? (
+        <LinearGradient
+          colors={['#4a90e2', '#6bb3ff', '#87ceeb', '#b0e0e6']}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 0, y: 1 }}
+          style={styles.backgroundImage}
+        >
+          <View style={styles.gameContainer}>
+            <GameEngine
+              key={engineKey}
+              ref={gameEngineRef}
+              style={styles.gameEngine}
+              systems={[
+                Physics,
+                InputSystem,
+                ObstacleSpawner,
+                CoinSpawner,
+                Difficulty,
+                Cleanup,
+                Collision,
+                ScoreSystem,
+              ]}
+              entities={entities}
+              running={running}
+              onEvent={handleEvent}
+            />
+            <HUD
+              score={score}
+              bestScore={bestScore}
+              isPaused={isPaused}
+              onTogglePause={togglePause}
+              visible={hasStarted && !isGameOver}
+            />
+            <GameModeSelection
+              visible={!hasStarted && gamemode === null}
+              onSelectMode={handleSelectMode}
+            />
+            <StartScreen
+              visible={!hasStarted && gamemode !== null}
+              onStart={handleStart}
+            />
+            <GameOverOverlay
+              visible={isGameOver}
+              score={score}
+              bestScore={bestScore}
+              onPlayAgain={handlePlayAgain}
+              onSelectMode={handleSelectGameMode}
+            />
+          </View>
+        </LinearGradient>
+      ) : (
+        <ImageBackground
+          source={require('./assets/background.png')}
+          style={styles.backgroundImage}
+          resizeMode="cover"
+        >
+          {currentMode === 3 && <View style={styles.reverseOverlay} />}
+          <View style={styles.gameContainer}>
+            <GameEngine
+              key={engineKey}
+              ref={gameEngineRef}
+              style={styles.gameEngine}
+              systems={[
+                Physics,
+                InputSystem,
+                ObstacleSpawner,
+                CoinSpawner,
+                Difficulty,
+                Cleanup,
+                Collision,
+                ScoreSystem,
+              ]}
+              entities={entities}
+              running={running}
+              onEvent={handleEvent}
+            />
+            <HUD
+              score={score}
+              bestScore={bestScore}
+              isPaused={isPaused}
+              onTogglePause={togglePause}
+              visible={hasStarted && !isGameOver}
+            />
+            <GameModeSelection
+              visible={!hasStarted && gamemode === null}
+              onSelectMode={handleSelectMode}
+            />
+            <StartScreen
+              visible={!hasStarted && gamemode !== null}
+              onStart={handleStart}
+            />
+            <GameOverOverlay
+              visible={isGameOver}
+              score={score}
+              bestScore={bestScore}
+              onPlayAgain={handlePlayAgain}
+              onSelectMode={handleSelectGameMode}
+            />
+          </View>
+        </ImageBackground>
+      )}
     </View>
   );
 }
@@ -181,5 +274,9 @@ const styles = StyleSheet.create({
   gameEngine: {
     flex: 1,
     backgroundColor: 'transparent',
+  },
+  reverseOverlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(0, 0, 0, 0.1)',
   },
 });

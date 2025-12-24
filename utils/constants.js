@@ -28,6 +28,18 @@ export const OBSTACLE_COLORS = [
   '#5c4033', // Medium space rock
 ];
 
+// Log colors for river mode - various shades of brown
+export const LOG_COLORS = [
+  '#8d6e63', // Brown log
+  '#6d4c41', // Darker brown log
+  '#795548', // Medium brown log
+  '#5d4037', // Dark brown log
+  '#a1887f', // Lighter brown log
+  '#8d6e63', // Brown log (repeat)
+  '#6d4c41', // Darker brown log (repeat)
+  '#795548', // Medium brown log (repeat)
+];
+
 export const COIN_RADIUS = 20;
 export const COIN_SPAWN_INTERVAL = 3000; // ms between coin spawns
 

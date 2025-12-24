@@ -1,22 +1,26 @@
 import Matter from 'matter-js';
 import { COIN_RADIUS, COIN_SPAWN_INTERVAL } from '../utils/constants';
 
-// Spawns new coins at the top at an interval.
+// Spawns new coins at an interval. Supports reverse mode.
 export const CoinSpawner = (entities, { time }) => {
   const world = entities.physics.world;
   const gameState = entities.gameState;
+  const gamemode = gameState.gamemode || 1;
+  const isReverse = gamemode === 3;
 
   const now = time.current;
   const lastCoinSpawnTime = gameState.lastCoinSpawnTime || 0;
 
   if (now - lastCoinSpawnTime > COIN_SPAWN_INTERVAL) {
     const screenWidth = gameState.width;
+    const screenHeight = gameState.height;
     const coinId = (gameState.coinId || 0) + 1;
     gameState.coinId = coinId;
     gameState.lastCoinSpawnTime = now;
 
     const x = COIN_RADIUS + Math.random() * (screenWidth - COIN_RADIUS * 2);
-    const y = -COIN_RADIUS * 2;
+    // Spawn position: top for modes 1 & 2, bottom for mode 3
+    const y = isReverse ? screenHeight + COIN_RADIUS * 2 : -COIN_RADIUS * 2;
 
     const coinBody = Matter.Bodies.circle(x, y, COIN_RADIUS, {
       label: 'Coin',
