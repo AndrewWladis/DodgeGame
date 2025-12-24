@@ -7,6 +7,9 @@ export const Obstacle = ({ body, size, color }) => {
   const x = body.position.x - width / 2;
   const baseY = body.position.y - height / 2;
   
+  // Random rotation angle between -10 and 10 degrees (generated once per obstacle)
+  const rotationAngle = useRef(-10 + Math.random() * 20).current;
+  
   // Create animated value for floating effect
   const floatAnim = useRef(new Animated.Value(0)).current;
   
@@ -53,7 +56,10 @@ export const Obstacle = ({ body, size, color }) => {
           width,
           height,
           backgroundColor: color,
-          transform: [{ translateY: animatedY }],
+          transform: [
+            { translateY: animatedY },
+            { rotate: `${rotationAngle}deg` },
+          ],
         },
       ]}
     />
