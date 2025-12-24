@@ -2,7 +2,7 @@ import { useWindowDimensions } from 'react-native';
 
 // Global tuning constants for the game.
 
-export const PLAYER_RADIUS = 18;
+export const PLAYER_RADIUS = 36;
 export const PLAYER_SPEED = 280; // pixels per second
 
 export const OBSTACLE_MIN_WIDTH = 40;

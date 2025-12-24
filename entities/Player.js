@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { View, StyleSheet, Animated } from 'react-native';
+import { Image, StyleSheet, Animated } from 'react-native';
 
 export const Player = ({ body, size, color }) => {
   const width = size[0];
@@ -47,7 +47,8 @@ export const Player = ({ body, size, color }) => {
   });
 
   return (
-    <Animated.View
+    <Animated.Image
+      source={require('../assets/ship.png')}
       style={[
         styles.player,
         {
@@ -55,10 +56,10 @@ export const Player = ({ body, size, color }) => {
           top: baseY,
           width,
           height,
-          backgroundColor: color,
           transform: [{ translateY: animatedY }],
         },
       ]}
+      resizeMode="contain"
     />
   );
 };
@@ -66,7 +67,6 @@ export const Player = ({ body, size, color }) => {
 const styles = StyleSheet.create({
   player: {
     position: 'absolute',
-    borderRadius: 9999,
   },
 });
 
