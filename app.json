@@ -13,7 +13,11 @@
       "backgroundColor": "#0e1221"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.andywladis.tripletscosmicrun",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -24,6 +28,11 @@
     },
     "web": {
       "favicon": "./assets/icon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "eb29aa8c-f826-49d6-b80f-b16bb6e04480"
+      }
     }
   }
 }

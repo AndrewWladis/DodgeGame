@@ -11,8 +11,8 @@ export const createInitialEntities = (width, height) => {
   // Gravity pulls obstacles downward.
   engine.world.gravity.y = 0.9;
 
-  // Player starting in the middle of the screen.
-  const playerBody = Matter.Bodies.circle(width / 2, height / 2, PLAYER_RADIUS, {
+  // Player starting lower on the screen.
+  const playerBody = Matter.Bodies.circle(width / 2, height * 0.7, PLAYER_RADIUS, {
     label: 'Player',
     isStatic: true,
   });
