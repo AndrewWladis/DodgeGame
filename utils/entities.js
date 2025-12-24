@@ -52,6 +52,8 @@ export const createInitialEntities = (width, height) => {
       obstacleSpeed: 4,
       lastSpawnTime: 0,
       obstacleId: 0,
+      coinId: 0,
+      lastCoinSpawnTime: 0,
       score: 0,
     },
     player: {

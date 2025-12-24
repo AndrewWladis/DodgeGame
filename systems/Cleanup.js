@@ -1,13 +1,13 @@
 import Matter from 'matter-js';
 
-// Removes obstacles that have fallen off-screen to keep entity count bounded.
+// Removes obstacles and coins that have fallen off-screen to keep entity count bounded.
 export const Cleanup = (entities) => {
   const world = entities.physics.world;
   const gameState = entities.gameState;
   const screenHeight = gameState.height;
 
   Object.keys(entities)
-    .filter((key) => key.startsWith('obstacle-'))
+    .filter((key) => key.startsWith('obstacle-') || key.startsWith('coin-'))
     .forEach((key) => {
       const entity = entities[key];
       const body = entity && entity.body;

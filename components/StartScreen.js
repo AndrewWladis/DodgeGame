@@ -6,8 +6,7 @@ export const StartScreen = ({ visible, onStart }) => {
 
   return (
     <View style={styles.overlay}>
-      <Text style={styles.title}>DODGE</Text>
-      <Text style={styles.subtitle}>Tap to Start</Text>
+      <Text style={styles.title}>COSMIC RUN</Text>
       <TouchableOpacity onPress={onStart} style={styles.button}>
         <Text style={styles.buttonText}>Play</Text>
       </TouchableOpacity>
@@ -24,16 +23,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
   },
   title: {
-    fontSize: 48,
+    fontSize: 40,
     fontWeight: '900',
     letterSpacing: 8,
     color: '#ffffff',
     marginBottom: 16,
-  },
-  subtitle: {
-    fontSize: 18,
-    color: '#a0aec0',
-    marginBottom: 32,
     textAlign: 'center',
   },
   button: {

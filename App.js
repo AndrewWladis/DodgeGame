@@ -5,6 +5,7 @@ import { useDimensions } from './utils/constants';
 import { createInitialEntities } from './utils/entities';
 import { Physics } from './systems/Physics';
 import { ObstacleSpawner } from './systems/ObstacleSpawner';
+import { CoinSpawner } from './systems/CoinSpawner';
 import { Cleanup } from './systems/Cleanup';
 import { Collision } from './systems/Collision';
 import { Difficulty } from './systems/Difficulty';
@@ -94,6 +95,7 @@ export default function App() {
               Physics,
               InputSystem,
               ObstacleSpawner,
+              CoinSpawner,
               Difficulty,
               Cleanup,
               Collision,

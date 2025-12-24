@@ -14,8 +14,12 @@ export const MIN_SPAWN_INTERVAL = 350;
 
 export const SCORE_PER_SECOND = 67; // points per second survived
 export const SCORE_PER_LEVEL = 1500; // every this many points, difficulty increases
+export const COIN_POINTS = 1000; // points awarded for collecting a coin
 
 export const OBSTACLE_COLORS = ['#f97316', '#22c55e', '#3b82f6', '#e11d48', '#a855f7'];
+
+export const COIN_RADIUS = 20;
+export const COIN_SPAWN_INTERVAL = 3000; // ms between coin spawns
 
 // Convenience hook for responsive layout.
 export const useDimensions = () => {
